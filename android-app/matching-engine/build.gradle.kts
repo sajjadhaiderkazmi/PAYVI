@@ -12,6 +12,14 @@ java {
     targetCompatibility = JavaVersion.VERSION_17
 }
 
+kotlin {
+    // Pins Kotlin's compile target to the same 17 as the `java {}` block
+    // above, regardless of which JDK Gradle itself runs on. Without this,
+    // Kotlin defaults to the JDK running Gradle (e.g. 21), which then
+    // mismatches Java's target and fails the build.
+    jvmToolchain(17)
+}
+
 dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter:5.10.2")
 }
