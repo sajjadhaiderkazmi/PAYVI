@@ -12,12 +12,16 @@ java {
     targetCompatibility = JavaVersion.VERSION_17
 }
 
+// Sets the Kotlin compiler's *output bytecode level* to 17 directly,
+// without asking Gradle to locate/download an actual JDK 17 installation
+// (that's what kotlin { jvmToolchain(17) } would do, and it fails on a
+// machine that only has e.g. JDK 21 with toolchain auto-download
+// disabled). Any JDK >= 17 running Gradle can still emit 17-level
+// bytecode via this flag - this matches how :app sets the same target.
 kotlin {
-    // Pins Kotlin's compile target to the same 17 as the `java {}` block
-    // above, regardless of which JDK Gradle itself runs on. Without this,
-    // Kotlin defaults to the JDK running Gradle (e.g. 21), which then
-    // mismatches Java's target and fails the build.
-    jvmToolchain(17)
+    compilerOptions {
+        jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)
+    }
 }
 
 dependencies {
