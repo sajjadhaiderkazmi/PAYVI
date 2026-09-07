@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- The bundled plugin ZIP, shared out via ACTION_SEND. -->
+    <files-path name="payvi_assets" path="payvi/" />
+    <cache-path name="payvi_cache" path="payvi/" />
+</paths>

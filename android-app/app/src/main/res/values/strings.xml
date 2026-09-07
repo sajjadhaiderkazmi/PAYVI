@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">PAYVI</string>
+
+    <!-- Screen titles -->
+    <string name="title_get_plugin">Get WordPress Plugin</string>
+    <string name="title_connect_store">Connect Store</string>
+    <string name="title_orders">Orders</string>
+    <string name="title_order_detail">Order Detail</string>
+    <string name="title_sms_senders">SMS Numbers to Monitor</string>
+    <string name="title_settings">Settings</string>
+
+    <!-- Main screen -->
+    <string name="main_not_connected">Not connected to a store yet</string>
+    <string name="main_connected_to">Connected to %1$s</string>
+    <string name="main_last_sync">Last sync: %1$s</string>
+    <string name="main_never">never</string>
+    <string name="main_btn_get_plugin">1. Get the Plugin</string>
+    <string name="main_btn_connect_store">2. Connect Store</string>
+    <string name="main_btn_sms_senders">3. Choose SMS Numbers</string>
+    <string name="main_btn_orders">View Orders</string>
+    <string name="main_btn_settings">Settings</string>
+    <string name="main_sync_toggle_on">Background monitoring: ON</string>
+    <string name="main_sync_toggle_off">Background monitoring: OFF</string>
+
+    <!-- Get plugin -->
+    <string name="plugin_intro">Install this plugin on your WooCommerce site to connect it with PAYVI.</string>
+    <string name="plugin_step1">1. Share or save the plugin ZIP below.</string>
+    <string name="plugin_step2">2. In WordPress admin, go to Plugins → Add New → Upload Plugin, choose the file, then click Install Now.</string>
+    <string name="plugin_step3">3. Activate the plugin, then open WooCommerce → PAYVI Connector to get your pairing QR code.</string>
+    <string name="plugin_btn_share">Share Plugin ZIP</string>
+    <string name="plugin_btn_save">Save to Downloads</string>
+    <string name="plugin_saved">Saved to Downloads/payvi-connector.zip</string>
+    <string name="plugin_save_failed">Could not save the file. Try Share instead.</string>
+    <string name="plugin_btn_continue">Next: Connect Store</string>
+
+    <!-- Connect store -->
+    <string name="connect_intro">Scan the QR code shown on your store\'s WooCommerce → PAYVI Connector page, or enter the details manually.</string>
+    <string name="connect_btn_scan">Scan QR Code</string>
+    <string name="connect_manual_toggle">Enter manually instead</string>
+    <string name="connect_field_site">Site URL</string>
+    <string name="connect_field_key">API Key</string>
+    <string name="connect_field_secret">API Secret</string>
+    <string name="connect_btn_verify">Verify &amp; Connect</string>
+    <string name="connect_verifying">Verifying…</string>
+    <string name="connect_success">Connected to %1$s</string>
+    <string name="connect_failed_generic">Could not connect. Check the details and try again.</string>
+    <string name="connect_failed_unauthorized">Invalid key/secret. Re-scan the QR code from WP Admin.</string>
+    <string name="connect_failed_network">Network error reaching the site. Check the URL and your connection.</string>
+    <string name="connect_invalid_qr">That QR code isn\'t a PAYVI pairing code.</string>
+    <string name="connect_camera_permission_needed">Camera permission is needed to scan the QR code. You can also enter the details manually.</string>
+
+    <!-- Orders -->
+    <string name="orders_empty">No orders yet. Pull down to refresh.</string>
+    <string name="orders_not_connected">Connect a store first.</string>
+    <string name="order_row_amount">Rs %1$s</string>
+    <string name="order_row_number">Order #%1$s</string>
+    <string name="order_recheck">Re-check</string>
+    <string name="order_no_screenshot">This order has no payment screenshot.</string>
+    <string name="order_open_screenshot">Open full screenshot</string>
+    <string name="order_matched_sms">Matched SMS</string>
+    <string name="order_no_matched_sms">No matching SMS found.</string>
+    <string name="order_ocr_fields">Detected from screenshot</string>
+    <string name="order_set_status_manually">Set status manually</string>
+
+    <!-- Statuses -->
+    <string name="status_pending">Pending</string>
+    <string name="status_completed">Completed</string>
+    <string name="status_not_sure">Not Sure</string>
+    <string name="status_not_received">Not Received</string>
+    <string name="status_duplicate">Duplicate Payment</string>
+
+    <!-- SMS senders -->
+    <string name="sms_permission_rationale">PAYVI needs SMS access to read payment confirmation messages (e.g. from JazzCash, EasyPaisa, or your bank) so it can automatically verify orders. It only reads messages from the numbers you select below.</string>
+    <string name="sms_grant_permission">Grant SMS Permission</string>
+    <string name="sms_permission_denied">SMS permission was denied. PAYVI cannot verify payments automatically without it.</string>
+    <string name="sms_senders_intro">Select which numbers/senders PAYVI should watch for payment messages.</string>
+    <string name="sms_senders_empty">No SMS senders found on this phone yet.</string>
+    <string name="sms_senders_save">Save Selection</string>
+
+    <!-- Settings -->
+    <string name="settings_poll_interval">Sync interval (minutes)</string>
+    <string name="settings_lookback">SMS lookback window (days)</string>
+    <string name="settings_disconnect">Disconnect Store</string>
+    <string name="settings_disconnect_confirm">Disconnect from this store? You will need to re-pair to use PAYVI again.</string>
+    <string name="settings_about">PAYVI verifies WooCommerce manual-payment orders by comparing the uploaded payment screenshot (via on-device OCR) against SMS receipts on your phone.</string>
+
+    <!-- Common -->
+    <string name="action_cancel">Cancel</string>
+    <string name="action_ok">OK</string>
+    <string name="action_retry">Retry</string>
+    <string name="action_save">Save</string>
+
+    <!-- Notifications -->
+    <string name="notif_channel_sync">PAYVI Sync</string>
+    <string name="notif_channel_sync_desc">Ongoing notification while PAYVI is watching for new orders and payment SMS.</string>
+    <string name="notif_channel_alerts">PAYVI Alerts</string>
+    <string name="notif_channel_alerts_desc">Alerts about payment verification results (e.g. duplicate payments).</string>
+    <string name="notif_sync_title">PAYVI is watching for payments</string>
+    <string name="notif_sync_text">Monitoring %1$d SMS number(s)</string>
+    <string name="notif_duplicate_title">Duplicate payment detected</string>
+    <string name="notif_duplicate_text">Order #%1$s reused a screenshot from another order.</string>
+</resources>

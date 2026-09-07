@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.Payvi" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/payvi_primary</item>
+        <item name="colorPrimaryDark">@color/payvi_primary_dark</item>
+        <item name="colorAccent">@color/payvi_accent</item>
+        <item name="android:statusBarColor">@color/payvi_primary_dark</item>
+    </style>
+</resources>

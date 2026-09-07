@@ -1,0 +1,15 @@
+# Android / Gradle
+android-app/**/build/
+android-app/.gradle/
+android-app/local.properties
+android-app/.idea/
+android-app/*.iml
+android-app/**/*.iml
+android-app/captures/
+android-app/.cxx/
+
+# WordPress
+wordpress-plugin/**/*.log
+
+# OS
+.DS_Store

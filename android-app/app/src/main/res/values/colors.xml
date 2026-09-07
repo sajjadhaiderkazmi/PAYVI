@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="payvi_primary">#1F6FEB</color>
+    <color name="payvi_primary_dark">#123E82</color>
+    <color name="payvi_accent">#00B894</color>
+
+    <color name="status_completed">#1E8E3E</color>
+    <color name="status_not_sure">#B98900</color>
+    <color name="status_not_received">#8A8F98</color>
+    <color name="status_duplicate">#D93025</color>
+    <color name="status_pending">#5F6368</color>
+
+    <color name="ic_launcher_background">#123E82</color>
+</resources>

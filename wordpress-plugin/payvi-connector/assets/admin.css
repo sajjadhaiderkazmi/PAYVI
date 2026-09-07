@@ -1,0 +1,50 @@
+.payvi-wrap .payvi-card {
+	background: #fff;
+	border: 1px solid #ccd0d4;
+	border-radius: 6px;
+	padding: 16px 20px;
+	margin: 16px 0;
+	max-width: 640px;
+}
+
+.payvi-wrap .payvi-status {
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+	padding: 12px 16px;
+	border-radius: 6px;
+	max-width: 640px;
+	margin: 10px 0 16px;
+	border: 1px solid #ccd0d4;
+}
+
+.payvi-wrap .payvi-status--ok {
+	background: #edfaef;
+	border-color: #46b450;
+}
+
+.payvi-wrap .payvi-status--off {
+	background: #fdf3f2;
+	border-color: #dc3232;
+}
+
+.payvi-wrap #payvi-qr-canvas {
+	display: block;
+	margin: 14px 0;
+	max-width: 260px;
+	height: auto;
+}
+
+.payvi-wrap code {
+	word-break: break-all;
+}
+
+.payvi-wrap .payvi-error {
+	color: #dc3232;
+	font-weight: 600;
+}
+
+#payvi-regen-status {
+	margin-left: 8px;
+	font-style: italic;
+}
