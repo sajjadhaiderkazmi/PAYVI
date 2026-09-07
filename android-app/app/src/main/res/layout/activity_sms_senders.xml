@@ -69,6 +69,13 @@
             android:text="@string/sms_senders_empty"
             android:visibility="gone" />
 
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_confirm"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:text="@string/sms_confirm_continue" />
+
     </LinearLayout>
 
 </LinearLayout>

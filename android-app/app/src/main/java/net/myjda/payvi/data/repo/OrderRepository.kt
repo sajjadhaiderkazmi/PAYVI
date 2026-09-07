@@ -8,6 +8,7 @@ import net.myjda.payvi.data.local.toEntity
 import net.myjda.payvi.data.model.StatusUpdateRequest
 import net.myjda.payvi.data.prefs.PayviPrefs
 import net.myjda.payvi.matching.PayviStatus
+import net.myjda.payvi.util.IsoDate
 import retrofit2.HttpException
 import java.io.IOException
 
@@ -23,6 +24,11 @@ class OrderRepository(
     private val dao: OrderDao
 ) {
 
+    companion object {
+        private const val PAGE_SIZE = 100
+        private const val MAX_ORDERS_PER_SYNC = 5000
+    }
+
     fun observeOrders(): Flow<List<OrderEntity>> = dao.observeAll()
 
     suspend fun getOrder(id: Long): OrderEntity? = dao.getById(id)
@@ -30,23 +36,50 @@ class OrderRepository(
     /** Pulls any orders created/updated on the store since the last sync,
      * merging them into the local cache without disturbing any match
      * result this device has already computed for an order (see
-     * OrderDto.toEntity). */
+     * OrderDto.toEntity).
+     *
+     * Pages forward through *every* order the cursor hasn't seen yet,
+     * rather than a single page - a store with more orders than fit in
+     * one page (or one that hasn't synced in a while) would otherwise
+     * only ever see the oldest batch, since the cursor used to jump
+     * straight to "now" after a single fetch and permanently skip
+     * everything in between (that was the bug: it advanced by
+     * response.server_time instead of by the newest order actually
+     * fetched). */
     suspend fun syncOrders(): SyncResult {
         val api = ApiClientFactory.createFromPrefs(prefs) ?: return SyncResult.NotPaired
 
+        var cursor = prefs.lastSyncSince
+        var totalFetched = 0
+
         return try {
-            val since = prefs.lastSyncSince
-            val response = api.listOrders(since = since, perPage = 100)
+            while (true) {
+                val response = api.listOrders(since = cursor, perPage = PAGE_SIZE)
+                if (response.orders.isEmpty()) break
 
-            val entities = response.orders.map { dto ->
-                dto.toEntity(existing = dao.getById(dto.id))
+                val entities = response.orders.map { dto ->
+                    dto.toEntity(existing = dao.getById(dto.id))
+                }
+                dao.upsert(entities)
+                totalFetched += entities.size
+
+                val newestInBatch = response.orders
+                    .mapNotNull { IsoDate.toEpochSeconds(it.dateModified) }
+                    .maxOrNull()
+
+                // Advance only if we found a newer timestamp than we
+                // already have - never jump ahead to "now". If dates
+                // fail to parse, stop rather than risk looping forever.
+                if (newestInBatch == null || newestInBatch <= cursor) break
+                cursor = newestInBatch
+                prefs.lastSyncSince = cursor
+
+                if (response.orders.size < PAGE_SIZE) break // caught up to "now"
+                if (totalFetched >= MAX_ORDERS_PER_SYNC) break // safety cap
             }
-            dao.upsert(entities)
 
-            prefs.lastSyncSince = response.serverTime
             prefs.lastSyncAtMillis = System.currentTimeMillis()
-
-            SyncResult.Success(entities.size)
+            SyncResult.Success(totalFetched)
         } catch (e: HttpException) {
             SyncResult.ApiError(e.code())
         } catch (e: IOException) {

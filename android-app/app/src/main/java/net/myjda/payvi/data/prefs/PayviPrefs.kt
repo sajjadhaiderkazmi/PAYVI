@@ -26,6 +26,7 @@ class PayviPrefs private constructor(private val prefs: SharedPreferences) {
         private const val KEY_SYNC_INTERVAL_MINUTES = "sync_interval_minutes"
         private const val KEY_SMS_LOOKBACK_DAYS = "sms_lookback_days"
         private const val KEY_BACKGROUND_SYNC_ENABLED = "background_sync_enabled"
+        private const val KEY_ONBOARDING_COMPLETE = "onboarding_complete"
 
         const val DEFAULT_SYNC_INTERVAL_MINUTES = 5
         const val DEFAULT_SMS_LOOKBACK_DAYS = 3
@@ -59,6 +60,13 @@ class PayviPrefs private constructor(private val prefs: SharedPreferences) {
         get() = !prefs.getString(KEY_SITE_URL, null).isNullOrBlank() &&
             !prefs.getString(KEY_API_KEY, null).isNullOrBlank() &&
             !prefs.getString(KEY_API_SECRET, null).isNullOrBlank()
+
+    /** True once the user has stepped through Get Plugin -> Connect Store
+     * -> Choose SMS Numbers -> Confirm at least once. Drives whether the
+     * app opens straight to the dashboard or resumes the setup wizard. */
+    var onboardingComplete: Boolean
+        get() = prefs.getBoolean(KEY_ONBOARDING_COMPLETE, false)
+        set(value) = prefs.edit().putBoolean(KEY_ONBOARDING_COMPLETE, value).apply()
 
     var siteUrl: String?
         get() = prefs.getString(KEY_SITE_URL, null)
@@ -114,6 +122,7 @@ class PayviPrefs private constructor(private val prefs: SharedPreferences) {
             .remove(KEY_SITE_NAME)
             .remove(KEY_LAST_SYNC_SINCE)
             .remove(KEY_LAST_SYNC_AT_MILLIS)
+            .remove(KEY_ONBOARDING_COMPLETE)
             .apply()
     }
 }

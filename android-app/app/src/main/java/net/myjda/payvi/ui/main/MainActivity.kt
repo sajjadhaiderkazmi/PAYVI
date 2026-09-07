@@ -18,18 +18,33 @@ import net.myjda.payvi.ui.settings.SettingsActivity
 import net.myjda.payvi.ui.sms.SmsSenderSelectionActivity
 import net.myjda.payvi.work.PayviSyncWorker
 
+/**
+ * The dashboard - but only once setup is done. Setup is a one-time,
+ * ordered wizard (Get Plugin -> Connect Store -> Choose SMS Numbers ->
+ * Confirm), and this activity is also the entry point the launcher opens,
+ * so on every create/resume it first checks whether the wizard has been
+ * completed and, if not, sends the user to whichever step comes next
+ * instead of showing the dashboard.
+ */
 class MainActivity : AppCompatActivity() {
 
     private lateinit var prefs: PayviPrefs
+    private var redirecting = false
+
     private lateinit var txtConnectionStatus: TextView
     private lateinit var txtLastSync: TextView
     private lateinit var switchBackgroundSync: SwitchMaterial
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
 
         prefs = PayviPrefs.getInstance(this)
+
+        if (redirectToWizardIfNeeded()) {
+            return // activity is finishing - don't inflate the dashboard
+        }
+
+        setContentView(R.layout.activity_main)
 
         val toolbar = findViewById<MaterialToolbar>(R.id.toolbar)
         toolbar.title = getString(R.string.app_name)
@@ -39,15 +54,6 @@ class MainActivity : AppCompatActivity() {
         txtLastSync = findViewById(R.id.txt_last_sync)
         switchBackgroundSync = findViewById(R.id.switch_background_sync)
 
-        findViewById<MaterialButton>(R.id.btn_get_plugin).setOnClickListener {
-            startActivity(Intent(this, GetPluginActivity::class.java))
-        }
-        findViewById<MaterialButton>(R.id.btn_connect_store).setOnClickListener {
-            startActivity(Intent(this, ConnectStoreActivity::class.java))
-        }
-        findViewById<MaterialButton>(R.id.btn_sms_senders).setOnClickListener {
-            startActivity(Intent(this, SmsSenderSelectionActivity::class.java))
-        }
         findViewById<MaterialButton>(R.id.btn_orders).setOnClickListener {
             startActivity(Intent(this, OrdersListActivity::class.java))
         }
@@ -64,7 +70,24 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
+        if (redirecting) return
+        if (redirectToWizardIfNeeded()) return
         refreshStatus()
+    }
+
+    /** Returns true (and finishes this activity) if the setup wizard
+     * isn't done yet and we just launched the next step of it. */
+    private fun redirectToWizardIfNeeded(): Boolean {
+        val next = when {
+            !prefs.isPaired -> GetPluginActivity::class.java
+            !prefs.onboardingComplete -> SmsSenderSelectionActivity::class.java
+            else -> null
+        } ?: return false
+
+        redirecting = true
+        startActivity(Intent(this, next))
+        finish()
+        return true
     }
 
     private fun refreshStatus() {

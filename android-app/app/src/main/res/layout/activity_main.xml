@@ -27,7 +27,7 @@
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
+                android:layout_marginBottom="24dp"
                 app:cardCornerRadius="10dp"
                 app:cardElevation="1dp">
 
@@ -59,27 +59,6 @@
 
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_get_plugin"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/main_btn_get_plugin"
-                android:layout_marginBottom="10dp" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_connect_store"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/main_btn_connect_store"
-                android:layout_marginBottom="10dp" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_sms_senders"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/main_btn_sms_senders"
-                android:layout_marginBottom="20dp" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_orders"

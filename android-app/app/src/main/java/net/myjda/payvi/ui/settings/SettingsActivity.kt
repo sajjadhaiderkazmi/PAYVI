@@ -1,5 +1,6 @@
 package net.myjda.payvi.ui.settings
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -10,6 +11,9 @@ import net.myjda.payvi.R
 import net.myjda.payvi.data.prefs.PayviPrefs
 import net.myjda.payvi.data.repo.PairingRepository
 import net.myjda.payvi.service.PayviSyncService
+import net.myjda.payvi.ui.pairing.ConnectStoreActivity
+import net.myjda.payvi.ui.plugin.GetPluginActivity
+import net.myjda.payvi.ui.sms.SmsSenderSelectionActivity
 import net.myjda.payvi.work.PayviSyncWorker
 
 class SettingsActivity : AppCompatActivity() {
@@ -42,6 +46,16 @@ class SettingsActivity : AppCompatActivity() {
 
         findViewById<MaterialButton>(R.id.btn_disconnect).setOnClickListener {
             confirmDisconnect()
+        }
+
+        findViewById<MaterialButton>(R.id.btn_get_plugin).setOnClickListener {
+            startActivity(Intent(this, GetPluginActivity::class.java))
+        }
+        findViewById<MaterialButton>(R.id.btn_connect_store).setOnClickListener {
+            startActivity(Intent(this, ConnectStoreActivity::class.java))
+        }
+        findViewById<MaterialButton>(R.id.btn_sms_senders).setOnClickListener {
+            startActivity(Intent(this, SmsSenderSelectionActivity::class.java))
         }
     }
 

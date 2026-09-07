@@ -77,8 +77,11 @@
     <string name="sms_senders_intro">Select which numbers/senders PAYVI should watch for payment messages.</string>
     <string name="sms_senders_empty">No SMS senders found on this phone yet.</string>
     <string name="sms_senders_save">Save Selection</string>
+    <string name="sms_confirm_continue">Confirm &amp; Go to Dashboard</string>
+    <string name="sms_confirm_none_selected">No numbers selected yet — payments won\'t be auto-verified until you pick at least one. Continue anyway?</string>
 
     <!-- Settings -->
+    <string name="settings_setup_heading">Setup</string>
     <string name="settings_poll_interval">Sync interval (minutes)</string>
     <string name="settings_lookback">SMS lookback window (days)</string>
     <string name="settings_disconnect">Disconnect Store</string>

@@ -1,10 +1,12 @@
 package net.myjda.payvi.ui.sms
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
@@ -19,7 +21,9 @@ import kotlinx.coroutines.withContext
 import net.myjda.payvi.R
 import net.myjda.payvi.data.local.PayviDatabase
 import net.myjda.payvi.data.local.SmsSenderEntity
+import net.myjda.payvi.data.prefs.PayviPrefs
 import net.myjda.payvi.sms.SmsReader
+import net.myjda.payvi.ui.main.MainActivity
 
 class SmsSenderSelectionActivity : AppCompatActivity() {
 
@@ -77,6 +81,10 @@ class SmsSenderSelectionActivity : AppCompatActivity() {
             permissionLauncher.launch(requiredPermissions)
         }
 
+        findViewById<MaterialButton>(R.id.btn_confirm).setOnClickListener {
+            onConfirmClicked()
+        }
+
         lifecycleScope.launch {
             db.smsSenderDao().observeAll().collectLatest { senders ->
                 adapter.submitList(senders)
@@ -130,5 +138,33 @@ class SmsSenderSelectionActivity : AppCompatActivity() {
             // existed (insertIfAbsent skipped those rows entirely).
             entities.forEach { dao.updateStats(it.address, it.messageCount, it.lastMessageMillis) }
         }
+    }
+
+    private fun onConfirmClicked() {
+        lifecycleScope.launch {
+            val hasSelection = db.smsSenderDao().getSelected().isNotEmpty()
+            if (hasSelection) {
+                finishOnboarding()
+            } else {
+                AlertDialog.Builder(this@SmsSenderSelectionActivity)
+                    .setMessage(R.string.sms_confirm_none_selected)
+                    .setPositiveButton(R.string.action_ok) { _, _ -> finishOnboarding() }
+                    .setNegativeButton(R.string.action_cancel, null)
+                    .show()
+            }
+        }
+    }
+
+    /** Marks setup as done (this is the last step of the wizard) and opens
+     * the dashboard, clearing the wizard screens out of the back stack so
+     * the back button from the dashboard exits the app instead of
+     * re-entering setup. */
+    private fun finishOnboarding() {
+        PayviPrefs.getInstance(this).onboardingComplete = true
+        startActivity(
+            Intent(this, MainActivity::class.java)
+                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+        )
+        finish()
     }
 }

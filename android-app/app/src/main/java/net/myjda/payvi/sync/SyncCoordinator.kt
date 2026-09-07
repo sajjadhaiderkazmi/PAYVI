@@ -16,8 +16,7 @@ import net.myjda.payvi.matching.PayviMatcher
 import net.myjda.payvi.matching.PayviStatus
 import net.myjda.payvi.ocr.ScreenshotOcrProcessor
 import net.myjda.payvi.sms.SmsReader
-import java.time.OffsetDateTime
-import java.time.format.DateTimeParseException
+import net.myjda.payvi.util.IsoDate
 import java.util.concurrent.TimeUnit
 
 /**
@@ -157,12 +156,5 @@ object SyncCoordinator {
         manager.notify(("dup_" + order.id).hashCode(), notification)
     }
 
-    private fun parseIsoToMillis(iso: String?): Long? {
-        if (iso.isNullOrBlank()) return null
-        return try {
-            OffsetDateTime.parse(iso).toInstant().toEpochMilli()
-        } catch (e: DateTimeParseException) {
-            null
-        }
-    }
+    private fun parseIsoToMillis(iso: String?): Long? = IsoDate.toEpochMillis(iso)
 }
